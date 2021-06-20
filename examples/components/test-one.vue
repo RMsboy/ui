@@ -9,7 +9,10 @@ export default {
   methods: {
     // 调用全局的notification
     openNotification() {
-      this.$notification()
+      this.$notification({
+        message: '这段时间有些累',
+        title: '最近如何？'
+      })
     }
   }
 }

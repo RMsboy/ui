@@ -12,11 +12,11 @@ export default {
 }
 </script>
  
-<style scoped>
+<style scoped lang="scss">
   .rm-button {
       display: inline-block;
       padding: 3px 6px;
-      background: #000;
+      background: $sky;
       color: #fff;
   }
 </style>

@@ -11,6 +11,8 @@ export default {
   name: 'App',
   components: {
     TestOne
+  },
+  methods: {
   }
 }
 </script>

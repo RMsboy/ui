@@ -11,7 +11,7 @@ const Notification = function(options) {
     data: options
   })
   
-  // 组件挂载
+  // 组件挂载在body
   instance.$mount()
   document.body.appendChild(instance.$el)
   

@@ -5,8 +5,17 @@
          @mouseenter="clearTimer()"
          @mouseleave="startTimer()"
          @click="click">
-      <span>{{message}}</span>
-      <span>{{title}}</span>
+      <i class="el-notification__icon"></i>
+      <div class="el-notification__group"
+           >
+        <h2 class="el-notification__title"
+            v-text="title"></h2>
+        <div class="el-notification__content"
+             v-show="message">{{message}}
+        </div>
+        <div class="el-notification__closeBtn el-icon-close"
+             @click.stop="close"></div>
+      </div>
     </div>
   </transition>
 </template>
@@ -32,7 +41,7 @@ export default {
       if (val) {
         this.visible = false
         // 监听css过渡后，触发销毁事件
-        // this.$el.addEventListener("transitionend", this.destroyElement)
+        this.$el.addEventListener("transitionend", this.destroyElement)
         this.destroyElement()
       }
     }
@@ -95,7 +104,7 @@ export default {
      */
     destroyElement() {
       // 移除监听事件、元素
-      // this.$el.removeEventListener("transitionend", this.destroyElement)
+      this.$el.removeEventListener("transitionend", this.destroyElement)
       this.$destroy(true)
       this.$el.parentNode.removeChild(this.$el)
     },
@@ -137,8 +146,38 @@ export default {
 }
 
 .el-notification {
-  width: 150px;
-  height: 85px;
-  background-color: rgb(117, 206, 218);
+  display: flex;
+  width: 330px;
+  padding: 14px 26px 14px 13px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ebeef5;
+  position: fixed;
+  background-color: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s,
+    bottom 0.3s;
+  overflow: hidden;
+  .el-notification__title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #303133;
+    margin: 0;
+  }
+.el-notification__content {
+    font-size: 14px;
+    line-height: 21px;
+    margin: 6px 0 0;
+    color: #606266;
+    text-align: justify;
+}
+.el-notification__closeBtn {
+    position: absolute;
+    top: 18px;
+    right: 15px;
+    cursor: pointer;
+    color: #909399;
+    font-size: 16px;
+}
 }
 </style>

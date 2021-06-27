@@ -69,7 +69,7 @@ export default {
     },
     // 点击消息的回调
     click() {
-      if(typeof this.onClick === "function") {
+      if (typeof this.onClick === "function") {
         this.onClick()
       }
     },
@@ -94,29 +94,29 @@ export default {
      * 销毁当期实例
      */
     destroyElement() {
-      // 移除监听事件
+      // 移除监听事件、元素
       // this.$el.removeEventListener("transitionend", this.destroyElement)
       this.$destroy(true)
       this.$el.parentNode.removeChild(this.$el)
     },
-    mounted() {
-      if (this.duration > 0) {
-        this.timer = setTimeout(() => {
-          // 如果没有关闭，调用关闭方法
-          if (!this.closed) {
-            this.close()
-          }
-        }, this.duration)
-      }
-      // 监听键盘事件
-      document.addEventListener("keydown", this.keydown)
-    },
-    destroyed() {
-      // 清掉键盘事件
-      document.removeEventListener("keydown", this.keydown)
-    },
 
-  }
+  },
+  mounted() {
+    if (this.duration > 0) {
+      this.timer = setTimeout(() => {
+        // 如果没有关闭，调用关闭方法
+        if (!this.closed) {
+          this.close()
+        }
+      }, this.duration)
+    }
+    // 监听键盘事件
+    document.addEventListener("keydown", this.keydown)
+  },
+  destroyed() {
+    // 清掉键盘事件
+    document.removeEventListener("keydown", this.keydown)
+  },
 }
 </script>
 <style lang="scss" scoped>

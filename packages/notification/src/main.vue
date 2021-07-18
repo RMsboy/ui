@@ -1,13 +1,13 @@
 <template>
   <transition name="el-notification-fade">
     <div v-show="visible"
-         class="el-notification"
+         :class="['el-notification', horizontalClass]"
+         :style="positionStyle"
          @mouseenter="clearTimer()"
          @mouseleave="startTimer()"
          @click="click">
       <i class="el-notification__icon"></i>
-      <div class="el-notification__group"
-           >
+      <div class="el-notification__group">
         <h2 class="el-notification__title"
             v-text="title"></h2>
         <div class="el-notification__content"
@@ -27,12 +27,14 @@ export default {
     return {
       message: "",
       title: "",
-      duration: 1500,
-      visible: true, // 消息 是否可见
+      duration: 4500,
+      visible: false, // 消息 是否可见
       onClose: null, // 关闭的回调函数
       timer: null, // 关闭的定时器
       closed: false, // 是否已关闭
       onClick: null, // 点击消息的回调
+      position: 'top-right', // 传入的位置
+      verticalOffset: 0, // 垂直方向偏移
     }
   },
   watch: {
@@ -45,6 +47,23 @@ export default {
         this.destroyElement()
       }
     }
+  },
+  computed: {
+    // 水平位置
+    horizontalClass() {
+      return this.position.indexOf('right') > -1 ? 'right' : 'left'
+    },
+    // 垂直方向
+    verticalProperty() {
+      return /^top-/.test(this.position) ? 'top' : 'bottom'
+    },
+    // 垂直样式 返回一个样式对象
+    positionStyle() {
+      return {
+        [this.verticalProperty]: `${this.verticalOffset}px`
+      }
+    }
+
   },
   methods: {
     /**
@@ -121,6 +140,7 @@ export default {
     }
     // 监听键盘事件
     document.addEventListener("keydown", this.keydown)
+    this.visible = true
   },
   destroyed() {
     // 清掉键盘事件
@@ -129,6 +149,19 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.el-notification {
+  width: 330px;
+  position: fixed;
+  padding: 14px 26px 14px 13px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ebeef5;
+  background-color: #fff;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: opacity .3s, transform 1.3s, left .3s, right .3s, top 0.4s, bottom .3s;
+
+}
 .el-notification-fade-enter {
   &.right {
     right: 0;
@@ -140,44 +173,7 @@ export default {
     transform: translateX(-100%);
   }
 }
-
 .el-notification-fade-leave-active {
   opacity: 0;
-}
-
-.el-notification {
-  display: flex;
-  width: 330px;
-  padding: 14px 26px 14px 13px;
-  border-radius: 8px;
-  box-sizing: border-box;
-  border: 1px solid #ebeef5;
-  position: fixed;
-  background-color: #fff;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  transition: opacity 0.3s, transform 0.3s, left 0.3s, right 0.3s, top 0.4s,
-    bottom 0.3s;
-  overflow: hidden;
-  .el-notification__title {
-    font-weight: 700;
-    font-size: 16px;
-    color: #303133;
-    margin: 0;
-  }
-.el-notification__content {
-    font-size: 14px;
-    line-height: 21px;
-    margin: 6px 0 0;
-    color: #606266;
-    text-align: justify;
-}
-.el-notification__closeBtn {
-    position: absolute;
-    top: 18px;
-    right: 15px;
-    cursor: pointer;
-    color: #909399;
-    font-size: 16px;
-}
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div>
     <rm-button @click.native="openNotification">通知</rm-button>
+    <rm-button @click.native="cloesNotif">关掉</rm-button>
   </div>
 </template>
 
@@ -8,19 +9,23 @@
 export default {
   data() {
     return {
-      val: ''
+      val: '',
+      notifi: null,
     }
   },
   methods: {
     // 调用全局的notification
     openNotification() {
-      this.$notification({
+      this.notifi = this.$notification({
         message: '这段时间有些累',
         title: '最近如何？',
         onClose: function() {
           console.log('今天是个好日子')
         }
       })
+    },
+    cloesNotif() {
+      this.notifi.close()
     },
     changeInput(e) {
       console.log(e.target.value)

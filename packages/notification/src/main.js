@@ -10,8 +10,8 @@ let seed = 1 // 实例唯一标识
 const Notification = function(options) {
 
   const id = 'notification_' + seed++
-  let verticalOffset = options.offset || 0 // 偏移数值
   const position = options.position || 'top-right'; // 显示位置
+  let verticalOffset = options.offset || 0 // 偏移数值
 
   // 实例化组件
   instance = new NotificationConstructor({
@@ -39,13 +39,40 @@ const Notification = function(options) {
   return instance
 }
 
-Notification.close = function() {
-  
+Notification.close = function(id, userOnClose) {
+  let index = -1
+  let len = instances.length
+  // 找到对应的实例
+  const obj = instances.filter((item, i) => {
+    if(item.id === id){
+      index = i
+      return true
+    } else {
+      return false
+    }
+  })[0]
+
+  if(!obj) return
+
+  if(typeof userOnClose === 'function'){
+    userOnClose(obj)
+  }
+  instances.splice(index, 1)
+
+  if (len <= 1) return;
+  const position = obj.position;
+  const removedHeight = obj.dom.offsetHeight;
+  for (let i = index; i < len - 1 ; i++) {
+    if (instances[i].position === position) {
+      instances[i].dom.style[obj.verticalProperty] = parseInt(instances[i].dom.style[obj.verticalProperty], 10) - removedHeight - 16 + 'px';
+    }
+  }
 }
 
 
 Notification.closeAll = function() {
   for(let i = instances.length - 1; i >= 0; i++) {
+    instances[i].close()
   }
 }
 

@@ -27,7 +27,7 @@ export default {
     return {
       message: "",
       title: "",
-      duration: 4500,
+      duration: 145000,
       visible: false, // 消息 是否可见
       onClose: null, // 关闭的回调函数
       timer: null, // 关闭的定时器
@@ -159,16 +159,24 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: opacity .3s, transform 1.3s, left .3s, right .3s, top 0.4s, bottom .3s;
+  // 动画结束目标类
+  &.right {
+    right: 16px;
+  }
 
+  &.left {
+    left: 16px;
+  }
 }
+// 动画开始时的类 
 .el-notification-fade-enter {
   &.right {
-    right: 0;
+    // right: 0;
     transform: translateX(100%);
   }
 
   &.left {
-    left: 0;
+    // left: 0;
     transform: translateX(-100%);
   }
 }

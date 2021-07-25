@@ -19,6 +19,7 @@ export default {
       this.notifi = this.$notification({
         message: '这段时间有些累',
         title: '最近如何？',
+        position: 'top-right',
         onClose: function() {
           console.log('今天是个好日子')
         }

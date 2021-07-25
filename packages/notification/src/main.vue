@@ -140,7 +140,6 @@ export default {
     }
     // 监听键盘事件
     document.addEventListener("keydown", this.keydown)
-    this.visible = true
   },
   destroyed() {
     // 清掉键盘事件

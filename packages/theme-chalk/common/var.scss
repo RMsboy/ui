@@ -1,0 +1,13 @@
+$--color-white: #FFFFFF !default;
+$--border-color-base: #DCDFE6 !default;
+$--color-text-regular: #606266 !default;
+
+// button
+$--border-width-base: 1px !default;
+$--border-style-base: solid !default;
+
+// button
+$--button-default-background-color: $--color-white !default;
+$--border-base: $--border-width-base $--border-style-base $--border-color-base !default;
+$--button-default-border-color: $--border-color-base !default;
+$--button-default-font-color: $--color-text-regular !default;

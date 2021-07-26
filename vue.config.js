@@ -29,7 +29,7 @@ module.exports = {
         .options({
           // Provide path to the file with resources
           // 要公用的scss的路径
-          resources: './packages/common/css/common.scss'
+          resources: './packages/theme-chalk/common/var.scss'
         })
         .end()
     })

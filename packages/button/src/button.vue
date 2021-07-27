@@ -1,13 +1,21 @@
 <template>
-  <div class="rm-button" 
+  <button
+    class="rm-button"
     @click="handleClick"
+    :disabled="buttonDisabled"
     :class="[
-    type ? 'rm-button--' + type : '',
-    buttonSize ? 'rm-button--' + buttonSize : ''
+      type ? 'rm-button--' + type : '',
+      buttonSize ? 'rm-button--' + buttonSize : '',
+      {
+        'is-disabled': buttonDisabled,
+        'is-plain': plain,
+        'is-round': round,
+        'is-circle': circle,
+      },
     ]"
-    >
+  >
     <span><slot></slot></span>
-  </div>
+  </button>
 </template>
 <script>
 export default {
@@ -15,14 +23,21 @@ export default {
   props: {
     type: {
       type: String,
-      default: 'default'
+      default: "default",
     },
-    size: String
+    size: String,
+    plain: Boolean,
+    round: Boolean,
+    circle: Boolean,
+    disabled: Boolean,
   },
   computed: {
     buttonSize() {
-      return this.size
-    }
+      return this.size;
+    },
+    buttonDisabled() {
+      return this.disabled;
+    },
   },
   methods: {
     handleClick(eve) {
@@ -50,6 +65,14 @@ export default {
   outline: none;
   margin: 0;
   transition: 0.1s;
+
+  // 默认尺寸
+  @include button-size(
+    $--button-padding-vertical,
+    $--button-padding-horizontal,
+    $--button-font-size,
+    $--button-border-radius
+  );
 }
 
 // button type
@@ -80,12 +103,52 @@ export default {
 }
 
 .rm-button--medium {
-  @include button-size($--button-medium-padding-vertical, $--button-medium-padding-horizontal, $--button-medium-font-size, $--button-medium-border-radius)
+  @include button-size(
+    $--button-medium-padding-vertical,
+    $--button-medium-padding-horizontal,
+    $--button-medium-font-size,
+    $--button-medium-border-radius
+  );
 }
 .rm-button--small {
-  @include button-size($--button-small-padding-vertical, $--button-small-padding-horizontal, $--button-small-font-size, $--button-small-border-radius);
+  @include button-size(
+    $--button-small-padding-vertical,
+    $--button-small-padding-horizontal,
+    $--button-small-font-size,
+    $--button-small-border-radius
+  );
 }
 .rm-button--mini {
-  @include button-size($--button-mini-padding-vertical, $--button-mini-padding-horizontal, $--button-mini-font-size, $--button-mini-border-radius);
+  @include button-size(
+    $--button-mini-padding-vertical,
+    $--button-mini-padding-horizontal,
+    $--button-mini-font-size,
+    $--button-mini-border-radius
+  );
+}
+
+.is-plain {
+  &,
+  &:hover,
+  &:focus {
+    background-color: $--color-white;
+    border-color: $--button-disabled-border-color;
+    color: $--button-disabled-font-color;
+  }
+}
+.is-round {
+  border-radius: 20px;
+}
+.is-circle {
+  border-radius: 50%;
+}
+.is-disabled,
+.is-disabled:hover,
+.is-disabled:focus {
+  // border-color: transparent;
+  color: #c0c4cc;
+  background-color: #fff;
+  border-color: #ebeef5;
+  cursor: no-drop;
 }
 </style>

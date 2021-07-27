@@ -48,7 +48,7 @@ export default {
 </script>
  
 <style scoped lang="scss">
-@import "../../theme-chalk/common/mixins.scss";
+@import "../../theme-chalk/mixins/mixins.scss";
 
 .rm-button {
   display: inline-block;

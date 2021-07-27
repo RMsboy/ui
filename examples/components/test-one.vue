@@ -1,7 +1,7 @@
 <template>
   <div>
-    <rm-button @click.native="openNotification">通知</rm-button>
-    <rm-button @click.native="cloesNotif">关掉</rm-button>
+    <rm-button type="primary" size="medium" @click.native="openNotification">通知</rm-button>
+    <rm-button type="warning" @click.native="cloesNotif">关掉</rm-button>
   </div>
 </template>
 

@@ -2,6 +2,7 @@
   <div>
     <rm-button type="primary" size="medium"  @click.native="openNotification">通知</rm-button>
     <rm-button type="warning" @click.native="cloesNotif">关掉</rm-button>
+    <rm-icon class="rm-icon-share" name="share"></rm-icon>
   </div>
 </template>
 

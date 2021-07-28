@@ -1,7 +1,9 @@
 import RmButton from './button'
+import RmIcon from './icon'
 
 const components = [
-  RmButton
+  RmButton,
+  RmIcon
 ]
 
 // 提供给 Vue.use 的 install 方法 使用Vue.use 引入的话，会引入所有的组件

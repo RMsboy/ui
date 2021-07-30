@@ -6,3 +6,32 @@
       padding: $padding-vertical $padding-horizontal;
     }
 }
+
+@mixin when($state) {
+  @at-root {
+    &.#{'is-' + $state} {
+      @content;
+    }
+  }
+}
+
+@mixin b($block) {
+  $B: 'rm-'+$block !global;
+
+  .#{$B} {
+    @content;
+  }
+}
+@mixin m($modifier) {
+  $selector: &;
+  $currentSelector: "";
+  @each $unit in $modifier {
+    $currentSelector: #{$currentSelector + & + '-'+ $unit + ","};
+  }
+
+  @at-root {
+    #{$currentSelector} {
+      @content;
+    }
+  }
+}

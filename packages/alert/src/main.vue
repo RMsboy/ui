@@ -57,7 +57,7 @@ export default {
     },
     computed:{
         typeClass(){
-            return `rm-alert--${this.type}`
+            return `rm-alert-${this.type}`
         },
         iconClass(){
             return TYPE_CLASSES_MAP[this.type] || 'rm-icon-info';
@@ -84,8 +84,115 @@ export default {
 }
 </script>
 <style scoped  lang="scss">
-.rm-alert{
+// .rm-alert{
+//     display: flex;
+//     align-items: center;
+//     width: 500px;
+//     .rm-alert-icon{
+        
+//     }
+//     .rm-alert-content{
+//         .rm-alert-title{
+//             font-size: 18px;
+//             margin: 0;
+//         }
+//         .rm-alert-descrition{
+//             font-size: 14px;
+//             margin: 5px;
+//         }
+//     }
+// }
+// .rm-alert--success{
+//      background: $--alert-success-color;
+// }
+// .rm-icon-success{
+//     color: #4bdf10;
+// }
+// .rm-alert--warning{
+//      background: $--alert-warning-color;
+// }
+// .rm-icon-warning{
+//     color: hsl(32, 87%, 47%);
+// }
+// .rm-alert--error{
+//      background: $--alert-danger-color;
+// }
+// .rm-icon-error{
+//     color: hsl(0, 92%, 49%);
+// }
+// .is-big{
+//     font-size: 20px;
+// }
+@import "../../theme-chalk/mixins/mixins.scss";
 
+@include b(alert){
+    width: 100%;
+    padding: $--alert-padding;
+    margin: 0;
+    box-sizing: border-box;
+    border-radius: $--alert-border-radius;
+    position: relative;
+    background-color: $--color-white;
+    overflow: hidden;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    transition: opacity .2s;
+
+    @include when(light){
+        .rm-alert-closebtn{
+            color: $--color-text-placeholder;
+        }
+    }
+    @include when(dark){
+         .rm-alert-closebtn {
+            color: $--color-white;
+        }
+         .rm-alert-description {
+             color: $--color-white;
+        }
+    }
+    @include when(center){
+        justify-content: center;
+    }
+    @include m(success){
+        &.is-light{
+            background-color: $--alert-success-color;
+            color:$--color-success;
+            .el-alert-descripition{
+                color:$--color-success;
+            }
+        }
+        &.is-dark {
+            background-color: $--color-success;
+            color: $--color-white;
+        }
+    }
+      @include m(warning){
+        &.is-light{
+            background-color: $--alert-warning-color;
+            color:$--color-warning;
+            .el-alert-descripition{
+                color:$--color-warning;
+            }
+        }
+        &.is-dark {
+            background-color: $--color-warning;
+            color: $--color-white;
+        }
+    }
+      @include m(error){
+        &.is-light{
+            background-color: $--alert-danger-color;
+            color:$--color-danger;
+            .el-alert-descripition{
+                color:$--color-danger;
+            }
+        }
+        &.is-dark {
+            background-color: $--color-danger;
+            color: $--color-white;
+        }
+    }
 }
-
 </style>

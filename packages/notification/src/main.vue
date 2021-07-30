@@ -27,7 +27,7 @@ export default {
     return {
       message: "",
       title: "",
-      duration: 145000,
+      duration: 4500,
       visible: false, // 消息 是否可见
       onClose: null, // 关闭的回调函数
       timer: null, // 关闭的定时器

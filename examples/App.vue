@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <TestOne />
+    <!-- <TestOne /> -->
+    <router-link to="/yifan">yifan</router-link> |
+    <router-link to="/yihua">yihua</router-link>
+    <hr>
+     <router-view/>
   </div>
 </template>
 
 <script>
-import TestOne from './components/test-one'
 
 export default {
   name: 'App',
   components: {
-    TestOne
+    
   },
   methods: {
   }

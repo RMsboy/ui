@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name:"yifan",
   data() {
     return {
       val: "",

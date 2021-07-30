@@ -1,6 +1,6 @@
 <template>
     <div>
-        <rm-alert type="success" showIcon title="测试Title" descripition="1213213124324"></rm-alert>
+        <rm-alert type="warning" showIcon title="测试Title" description="1213213124324" effect="dark"></rm-alert>
     </div>
 </template>
 <script>

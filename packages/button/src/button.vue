@@ -14,6 +14,7 @@
       },
     ]"
   >
+    <rm-icon :name="icon" v-if="icon"></rm-icon>
     <span><slot></slot></span>
   </button>
 </template>
@@ -26,6 +27,7 @@ export default {
       default: "default",
     },
     size: String,
+    icon: String,
     plain: Boolean,
     round: Boolean,
     circle: Boolean,

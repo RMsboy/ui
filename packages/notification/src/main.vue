@@ -168,7 +168,7 @@ export default {
     left: 16px;
   }
 }
-// 动画开始时的类 
+// 动画开始之前时的类 
 .el-notification-fade-enter {
   &.right {
     // right: 0;

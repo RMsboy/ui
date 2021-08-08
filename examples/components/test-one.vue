@@ -5,7 +5,7 @@
     >
     <rm-button type="warning" @click.native="cloesNotif" icon="info">关掉</rm-button>
     <rm-icon class="rm-icon-share share"></rm-icon>
-    <rm-input></rm-input>
+    <rm-input v-model="val" clearable type="text" showPassword></rm-input>
   </div>
 </template>
 
@@ -32,10 +32,7 @@ export default {
     },
     cloesNotif() {
       this.notifi.close();
-    },
-    changeInput(e) {
-      console.log(e.target.value);
-    },
+    }
   },
 };
 </script>

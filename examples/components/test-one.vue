@@ -5,7 +5,9 @@
     >
     <rm-button type="warning" @click.native="cloesNotif" icon="info">关掉</rm-button>
     <rm-icon class="rm-icon-share share"></rm-icon>
-    <rm-input v-model="val" clearable type="text" showPassword></rm-input>
+    <rm-input v-model="val" clearable type="text" showPassword suffixIcon="rm-icon-goods">
+      <template slot="prepend">Http://</template>
+    </rm-input>
   </div>
 </template>
 

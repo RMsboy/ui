@@ -1,17 +1,66 @@
 <template>
-  <div class="rm-input">
-    <input :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
-           :disabled="disabled"
-           :value="value"
-           @input="$emit('input', $event.target.value)">
-    <span class="icon-box">
-      <rm-icon v-if="clearable && value"
-               class="rm-icon-circle-close close-icon"
-               @click.native="$emit('input', '')"></rm-icon>
-      <rm-icon v-if="showPassword" class="rm-icon-view password-icon"
-               @click.native="changePasswordVisible"></rm-icon>
-    </span>
+  <div :class="[type === 'textarea' ? 'rm-textarea' : 'rm-input',
+  {'rm-input-group': $slots.prepend || $slots.append,
+  'rm-input': true,
+  'rm-input-group--append': $slots.append,
+  'rm-input-group--prepend': $slots.prepend,
+  'rm-input--prefix': $slots.prefix || prefixIcon,
+  'rm-input--suffix': $slots.suffix || suffixIcon || clearable || showPassword ,}
+  ]">
+    <!-- 不为 textarea -->
+    <template v-if="type != 'textarea'">
+      <!-- 前置元素 一般放按钮、标签-->
+      <div class="rm-input-group__prepend"
+           v-if="$slots.prepend">
+        <slot name="prepend"></slot>
+      </div>
+      <!-- 前置内容 一般放icon -->
+      <span class="rm-input__prefix"
+            v-if="$slots.prefix || prefixIcon">
+        <slot name="prefix"></slot>
+        <rm-icon v-if="prefixIcon"
+                 class="rm-input__icon"
+                 :class="prefixIcon"></rm-icon>
+      </span>
+      <input :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
+             :disabled="disabled"
+             class="rm-input__inner"
+             :value="value"
+             @input="$emit('input', $event.target.value)">
+      <!-- <span class="icon-box">
+        <rm-icon v-if="clearable && value"
+                 class="rm-icon-circle-close close-icon"
+                 @click.native="$emit('input', '')"></rm-icon>
+        <rm-icon v-if="showPassword"
+                 class="rm-icon-view password-icon"
+                 @click.native="changePasswordVisible"></rm-icon>
+      </span> -->
+      <!-- 后置内容 一般放icon -->
+      <span class="rm-input__suffix"
+            v-if="$slots.suffix || suffixIcon">
+        <span>
+          <template>
+            <slot name="suffix"></slot>
+            <rm-icon v-if="suffixIcon"
+                     class="el-input__icon"
+                     :class="suffixIcon"></rm-icon>
+          </template>
+          <rm-icon v-if="clearable && value"
+                   class="rm-icon-circle-close rm-input__icon"
+                   @click.native="$emit('input', '')"></rm-icon>
+          <rm-icon v-if="showPassword"
+                   class="rm-icon-view rm-input__icon"
+                   @click.native="changePasswordVisible"></rm-icon>
+        </span>
 
+      </span>
+      <!-- 后置元素 一般放按钮、标签-->
+      <div class="rm-input-group__append"
+           v-if="$slots.append">
+        <slot name="append"></slot>
+      </div>
+    </template>
+    <textarea v-else></textarea>
   </div>
 </template>
 
@@ -35,11 +84,16 @@ export default {
       default: false
     },
     type: String,
+    suffixIcon: String, // 后置内容类名
+    prefixIcon: String, // 前置内容类名
   },
   data() {
     return {
       passwordVisible: false, // type为password 密码内容是否可见
     }
+  },
+  mounted() {
+    console.log(this.$slots)
   },
   methods: {
     // type为password时，切换显示模式
@@ -51,34 +105,80 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.rm-input {
-  width: 180px;
+@import "../../theme-chalk/mixins/mixins.scss";
+
+// rm-input
+@include b(input) {
+  width: 100%;
   position: relative;
   font-size: 14px;
   display: inline-block;
   cursor: pointer;
-  input {
+
+  .rm-input__inner {
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
     height: 40px;
     line-height: 40px;
-    box-sizing: border-box;
-    padding: 0 30px 0 15px;
+    outline: none;
+    padding: 0 15px;
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    width: 100%;
   }
-  .icon-box {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: -20px;
-    display: flex;
-    justify-content: flex-end;
-    .close-icon,
-    .password-icon {
-      margin: 0 2px;
-      font-size: 14px;
-      color: #d5e1e1;
-      &:hover {
-        color: #606266;
-      }
-    }
-  }
+}
+// 前置、后置元素
+.rm-input-group {
+  line-height: normal;
+  display: inline-table;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.rm-input-group__append,
+.rm-input-group__prepend {
+  background-color: $--background-color-base;
+  color: $--color-info;
+  vertical-align: middle;
+  display: table-cell;
+  position: relative;
+  border: $--border-base;
+  border-radius: $--input-border-radius;
+  padding: 0 20px;
+  width: 1px;
+  white-space: nowrap;
+}
+// 前置、后置内容
+
+.rm-input__icon,
+.el-input__prefix {
+  height: 100%;
+  text-align: center;
+  transition: all 0.3s;
+}
+.rm-input__prefix {
+  position: absolute;
+  left: 5px;
+  top: 0;
+  color: #c0c4cc;
+}
+.rm-input__suffix {
+  position: absolute;
+  height: 100%;
+  right: 5px;
+  top: 0;
+  text-align: center;
+  color: #c0c4cc;
+  transition: all 0.3s;
+  // pointer-events: none; 阻止元素成为鼠标事件目标
+}
+.rm-input__icon {
+  width: 25px;
+  line-height: 40px;
 }
 </style>

@@ -27,14 +27,6 @@
              class="rm-input__inner"
              :value="value"
              @input="$emit('input', $event.target.value)">
-      <!-- <span class="icon-box">
-        <rm-icon v-if="clearable && value"
-                 class="rm-icon-circle-close close-icon"
-                 @click.native="$emit('input', '')"></rm-icon>
-        <rm-icon v-if="showPassword"
-                 class="rm-icon-view password-icon"
-                 @click.native="changePasswordVisible"></rm-icon>
-      </span> -->
       <!-- 后置内容 一般放icon -->
       <span class="rm-input__suffix"
             v-if="$slots.suffix || suffixIcon">

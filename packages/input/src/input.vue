@@ -52,11 +52,16 @@
         <slot name="append"></slot>
       </div>
     </template>
-    <textarea v-else></textarea>
+    <textarea v-else
+              :style="textareaStyle">
+
+    </textarea>
   </div>
 </template>
 
 <script>
+import merge from 'src/utils/merge'
+
 export default {
   name: "RmInput",
   props: {
@@ -75,22 +80,39 @@ export default {
       type: Boolean,
       default: false
     },
+    // 是否根据文本内容自动调整
+    autosize: {
+      type: Boolean,
+      default: false
+    },
     type: String,
+    resize: String, // 能否被缩放
     suffixIcon: String, // 后置内容类名
     prefixIcon: String, // 前置内容类名
   },
   data() {
     return {
       passwordVisible: false, // type为password 密码内容是否可见
+      textareaCalcStyle: {}, // textarea 样式对象
     }
   },
   mounted() {
     console.log(this.$slots)
   },
+  computed: {
+    // 计算样式
+    textareaStyle() {
+      return merge({}, this.textareaCalcStyle, {'resize': this.resize})
+    }
+  },
   methods: {
     // type为password时，切换显示模式
     changePasswordVisible() {
       this.passwordVisible = !this.passwordVisible
+    },
+    // 计算 textarea 样式
+    resizeTextarea() {
+
     }
   }
 }

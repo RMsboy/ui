@@ -100,7 +100,7 @@ export default {
     console.log(this.$slots)
   },
   computed: {
-    // 计算样式
+    // 计算 textarea 的样式
     textareaStyle() {
       return merge({}, this.textareaCalcStyle, {'resize': this.resize})
     }

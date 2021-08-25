@@ -53,6 +53,7 @@
       </div>
     </template>
     <textarea v-else
+              ref="textarea"
               :style="textareaStyle">
 
     </textarea>
@@ -61,6 +62,7 @@
 
 <script>
 import merge from 'src/utils/merge'
+import calcTextareaHeight from './calcTextareaHeight'
 
 export default {
   name: "RmInput",
@@ -80,9 +82,9 @@ export default {
       type: Boolean,
       default: false
     },
-    // 是否根据文本内容自动调整
+    // 是否根据文本内容自动调整 可传入行相关
     autosize: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: false
     },
     type: String,
@@ -93,16 +95,18 @@ export default {
   data() {
     return {
       passwordVisible: false, // type为password 密码内容是否可见
-      textareaCalcStyle: {}, // textarea 样式对象
+      textareaCalcStyle: {}, // textarea 样式对象 通过 autosize 的行数计算高度
     }
   },
   mounted() {
     console.log(this.$slots)
+    // textare 时计算高度
+    this.resizeTextarea()
   },
   computed: {
     // 计算 textarea 的样式
     textareaStyle() {
-      return merge({}, this.textareaCalcStyle, {'resize': this.resize})
+      return merge({}, this.textareaCalcStyle, { resize: this.resize })
     }
   },
   methods: {
@@ -112,6 +116,21 @@ export default {
     },
     // 计算 textarea 样式
     resizeTextarea() {
+      // eslint-disable-next-line no-debugger
+      if (this.type != 'textarea') return
+
+      let { autosize } = this
+      // 没有传入 autosize 对象时, 设置默认最小高度
+      if (!autosize) {
+        this.textareaCalcStyle = {
+          minHeight: calcTextareaHeight(this.$refs.textarea).minHeight
+        }
+        return
+      }
+      const minRows = autosize.minRows
+      const maxRows = autosize.maxRows
+
+      this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows)
 
     }
   }

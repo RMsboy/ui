@@ -5,7 +5,7 @@
     >
     <rm-button type="warning" @click.native="cloesNotif" icon="info">关掉</rm-button>
     <rm-icon class="rm-icon-share share"></rm-icon>
-    <rm-input v-model="val" clearable type="textarea"  showPassword suffixIcon="rm-icon-goods">
+    <rm-input v-model="val" clearable type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  showPassword suffixIcon="rm-icon-goods">
       <template slot="prepend">Http://</template>
     </rm-input>
   </div>

@@ -1,5 +1,6 @@
 // 问题一：为什么要使用 hiddenTextarea 来计算高度、最小高度，不是直接使用传入的 textarea
-// 问题二：为什么 maxRows 只是用来设置 height ，而不是 maxHeight
+// 问题二：为什么 maxRows 只是用来设置 height ，而不是 maxHeigh, 
+// 答：maxRows 是保证最多多少行，不出滚动条
 
 let hiddenTextarea;
 
@@ -74,8 +75,6 @@ export default function calcTextareaHeight(
     boxSizing,
     contextStyle // 
   } = calculateNodeStyling(targetElement);
-  // eslint-disable-next-line no-debugger
-  debugger
   // 将目标节点样式、值 赋给 临时textare 节点
   hiddenTextarea.setAttribute('style', `${contextStyle};${HIDDEN_STYLE}`);
   hiddenTextarea.value = targetElement.value || targetElement.placeholder || '';

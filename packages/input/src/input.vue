@@ -1,7 +1,9 @@
+// 注意：rm-input 组件由input、textarea两种原生标签组成，且并没有使用 :value="value" 的形式绑定值，而是直接使用 computed.nativeInputValue 包装 props.value 值
+//值改变 emit 派发事件，初始化时，使用 computed.nativeInputValue 赋值给 input、textarea 两种原生标签的值
+
 <template>
   <div :class="[type === 'textarea' ? 'rm-textarea' : 'rm-input',
   {'rm-input-group': $slots.prepend || $slots.append,
-  'rm-input': true,
   'rm-input-group--append': $slots.append,
   'rm-input-group--prepend': $slots.prepend,
   'rm-input--prefix': $slots.prefix || prefixIcon,
@@ -24,27 +26,37 @@
       </span>
       <input :type="showPassword ? (passwordVisible ? 'text' : 'password') : type"
              :disabled="disabled"
+             ref="input"
+             :maxlength="$attrs.maxlength"
              class="rm-input__inner"
-             :value="value"
-             @input="$emit('input', $event.target.value)">
+             @input="handleInput"
+             @change="handleChange"
+             @compositionstart="handleCompositionStart"
+             @compositionupdate="handleCompositionupdate"
+             @compositionend="handleCompositionend">
       <!-- 后置内容 一般放icon -->
       <span class="rm-input__suffix"
-            v-if="$slots.suffix || suffixIcon">
-        <span>
+            v-if="getSuffixVisible()">
+        <span class="rm-input__suffix-inner">
           <template>
             <slot name="suffix"></slot>
             <rm-icon v-if="suffixIcon"
-                     class="el-input__icon"
+                     class="rm-input__icon"
                      :class="suffixIcon"></rm-icon>
           </template>
           <rm-icon v-if="clearable && value"
                    class="rm-icon-circle-close rm-input__icon"
-                   @click.native="$emit('input', '')"></rm-icon>
+                   @click="clear"></rm-icon>
           <rm-icon v-if="showPassword"
                    class="rm-icon-view rm-input__icon"
                    @click.native="changePasswordVisible"></rm-icon>
+          <span v-if="isWordLimitVisible"
+                class="rm-input__count">
+            <span class="rm-input__count-inner">
+              {{ textLength }}/{{ upperLimit }}
+            </span>
+          </span>
         </span>
-
       </span>
       <!-- 后置元素 一般放按钮、标签-->
       <div class="rm-input-group__append"
@@ -54,9 +66,17 @@
     </template>
     <textarea v-else
               ref="textarea"
-              style="font-size: 30px;"
+              class="rm-textarea__inner"
+              @input="handleInput"
+              :maxlength="$attrs.maxlength"
+              @change="handleChange"
+              @compositionstart="handleCompositionStart"
+              @compositionupdate="handleCompositionupdate"
+              @compositionend="handleCompositionend"
               :style="textareaStyle">
     </textarea>
+    <span v-if="isWordLimitVisible && type === 'textarea'"
+          class="rm-input__count">{{textLength}}/{{upperLimit}}</span>
   </div>
 </template>
 
@@ -87,6 +107,11 @@ export default {
       type: [Boolean, Object],
       default: false
     },
+    // 使用字数限制
+    showWordLimit: {
+      type: Boolean,
+      default: false
+    },
     type: String,
     resize: String, // 能否被缩放
     suffixIcon: String, // 后置内容类名
@@ -96,17 +121,51 @@ export default {
     return {
       passwordVisible: false, // type为password 密码内容是否可见
       textareaCalcStyle: {}, // textarea 样式对象 通过 autosize 的行数计算高度
+      isComposing: false, // 是否在输入法编辑器 编辑状态 （如：中文等） 
     }
   },
   mounted() {
-    console.log(this.$slots)
-    // textare 时计算高度
+    console.log(this.$attrs)
+    // 设置 input 组件的值为传入的 value
+    this.setNativeInputValue()
+    // 为 textare 时计算高度
     this.resizeTextarea()
+  },
+  watch: {
+    value() {
+      // 计算 textarea 高度
+      this.$nextTick(this.resizeTextarea);
+    },
+    nativeInputValue() {
+      // 传入的原始值改变，将值同步到 input\textarea 标签里
+      this.setNativeInputValue()
+    }
   },
   computed: {
     // 计算 textarea 的样式
     textareaStyle() {
       return merge({}, this.textareaCalcStyle, { resize: this.resize })
+    },
+    // input 原始值
+    nativeInputValue() {
+      return this.value === null || this.value === undefined ? '' : String(this.value);
+    },
+    // 显示字数限制?
+    isWordLimitVisible() {
+      return this.showWordLimit
+    },
+    // 字数限制上限
+    upperLimit() {
+      // this.$attrs => 父组件传给子组件，但子组件 props 没有接收的数据
+      return this.$attrs.maxlength
+    },
+    // 当前 value 长度
+    textLength() {
+      return this.value.length
+    },
+    // 超过最大限制长度 ?
+    inputExceed() {
+      return this.isWordLimitVisible && (this.textLength > this.upperLimit)
     }
   },
   methods: {
@@ -114,7 +173,7 @@ export default {
     changePasswordVisible() {
       this.passwordVisible = !this.passwordVisible
     },
-    // 计算 textarea 样式
+    // 计算 textarea 时计算高度
     resizeTextarea() {
       // eslint-disable-next-line no-debugger
       if (this.type != 'textarea') return
@@ -132,6 +191,55 @@ export default {
 
       this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows)
 
+    },
+    // textarea input事件 e.data => 当前一次改变值 e.target.value => 当前框的值（累计）
+    handleInput(e) {
+      // 输入法编辑中 不派发事件
+      if (this.isComposing) return;
+      // 值 == 传进来的原始值 不派发
+      if (this.nativeInputValue === e.target.value) return
+      this.$emit('input', e.target.value)
+    },
+    // 派发 change 事件
+    handleChange(event) {
+      console.log('change事件', event.target.value)
+      this.$emit('change', event.target.value);
+    },
+    // 中文输入法 开始事件
+    handleCompositionStart() {
+      this.isComposing = true
+    },
+    // 中文输入法 编辑、改变事件
+    handleCompositionupdate() {
+      console.log('update')
+    },
+    // 中文输入法 关闭事件
+    handleCompositionend(e) {
+      this.isComposing = false
+      // 输入法关闭时，input 事件比 compositionend 触发早，导致 handleInput return 掉没有派发input事件出去
+      // 此处手动触发一次 input 事件
+      this.handleInput(e)
+    },
+    // 点击清空
+    clear() {
+      this.$emit('input', '')
+      this.$emit('change', '')
+      this.$emit('clear', '')
+    },
+    // 将原生标签的 value 设置为 传入的 原始值
+    setNativeInputValue() {
+      let input = this.$refs.input || this.$refs.textarea
+      if (!input) return
+      if (input.value === this.nativeInputValue) return
+      input.value = this.nativeInputValue
+    },
+    // 后置内容是否显示
+    getSuffixVisible() {
+      return this.$slots.suffix ||
+        this.suffixIcon ||
+        this.showClear ||
+        this.showPassword ||
+        this.isWordLimitVisible
     }
   }
 }
@@ -164,6 +272,20 @@ export default {
     transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     width: 100%;
   }
+  // 字数长度计算
+  .rm-input__count {
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    color: #909399;
+    font-size: 12px;
+    .rm-input__count-inner {
+      background: #fff;
+      line-height: normal;
+      display: inline-block;
+      padding: 0 5px;
+    }
+  }
 }
 // 前置、后置元素
 .rm-input-group {
@@ -189,7 +311,7 @@ export default {
 // 前置、后置内容
 
 .rm-input__icon,
-.el-input__prefix {
+.rm-input__prefix {
   height: 100%;
   text-align: center;
   transition: all 0.3s;
@@ -210,8 +332,23 @@ export default {
   transition: all 0.3s;
   // pointer-events: none; 阻止元素成为鼠标事件目标
 }
-.rm-input__icon {
-  width: 25px;
-  line-height: 40px;
+
+.rm-textarea {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  vertical-align: bottom;
+  font-size: 14px;
+  .rm-textarea__inner {
+    width: 100%;
+  }
+  .rm-input__count {
+    color: #909399;
+    background: #fff;
+    position: absolute;
+    font-size: 12px;
+    bottom: 5px;
+    right: 10px;
+  }
 }
 </style>

@@ -54,8 +54,8 @@
     </template>
     <textarea v-else
               ref="textarea"
+              style="font-size: 30px;"
               :style="textareaStyle">
-
     </textarea>
   </div>
 </template>

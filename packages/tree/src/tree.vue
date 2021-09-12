@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'Rmtree'
+  name: 'RmTree'
 }
 </script>
 

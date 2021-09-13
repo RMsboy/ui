@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: 'RmTreeNode'
+  name: 'RmTreeNode',
+  props: {
+    
+  }
 }
 </script>
 

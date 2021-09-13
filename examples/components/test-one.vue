@@ -3,22 +3,62 @@
     <rm-button type="primary" size="medium" @click.native="openNotification"
       >通知</rm-button
     >
-    <rm-button type="warning" @click.native="cloesNotif" icon="info">关掉</rm-button>
+    <rm-button type="warning" @click.native="cloesNotif" icon="info"
+      >关掉</rm-button
+    >
     <rm-icon class="rm-icon-share share"></rm-icon>
-    <rm-input v-model="val" clearable type="input" maxlength="30" show-word-limit :autosize="{ minRows: 2, maxRows: 4}"  suffixIcon="rm-icon-goods">
+    <rm-input
+      v-model="val"
+      clearable
+      type="input"
+      maxlength="30"
+      show-word-limit
+      :autosize="{ minRows: 2, maxRows: 4 }"
+      suffixIcon="rm-icon-goods"
+    >
       <template slot="prepend">Http://</template>
     </rm-input>
-    <rm-tree></rm-tree>
+    <rm-tree :data="treeArr"></rm-tree>
   </div>
 </template>
 
 <script>
 export default {
-  name:"yifan",
+  name: "yifan",
   data() {
     return {
       val: "",
       notifi: null,
+      treeArr: [
+        {
+          label: "一级1",
+          children: [
+            {
+              label: "二级1-2",
+              children: [
+                {
+                  label: "三级1-3",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: "一级2",
+          children: [
+            {
+              label: "二级2-2",
+              children: [
+                {
+                  label: "三级2-3",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        }
+      ]
     };
   },
   methods: {

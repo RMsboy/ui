@@ -77,7 +77,8 @@ export default {
     },
     data(){
         return{
-            visible:true
+            visible:true,
+            closeable: false
         }
     }
 

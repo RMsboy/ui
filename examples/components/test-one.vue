@@ -38,7 +38,12 @@ export default {
               children: [
                 {
                   label: "三级1-3",
-                  children: [],
+                  children: [
+                    {
+                      label: '四级1-4',
+                      children: []
+                    }
+                  ],
                 },
               ],
             },

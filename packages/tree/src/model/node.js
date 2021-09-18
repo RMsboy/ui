@@ -27,7 +27,7 @@ export default class Node {
         this.expanded = false;
         this.parent = null;
         this.visible = true;
-
+debugger
         // 获取所有选项 赋值同样属性给当前 Node 实例: data、store
         for (let item in options) {
             if (Object.prototype.hasOwnProperty.call(options, item)) {
@@ -61,6 +61,7 @@ export default class Node {
 
     setData(data) {
         if (!Array.isArray(data)) {
+            // node 加上 $treeNodeId 属性, $treeNodeId: data.id
             markNodeData(this, data);
         }
 
@@ -68,6 +69,7 @@ export default class Node {
         this.childNodes = [];
 
         let children;
+        // 当前 node 为根 node , data 中所有数据都添加至children
         if (this.level === 0 && this.data instanceof Array) {
             children = this.data;
         } else {

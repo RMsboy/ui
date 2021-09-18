@@ -3,6 +3,7 @@
     <rm-tree-node
       v-for="child in root.childNodes"
       :key="child.id"
+      :node="child"
     ></rm-tree-node>
     <div class="el-tree__empty-block" v-if="!data || data.length === 0">
       <span class="el-tree__empty-text">{{ emptyText }}</span>
@@ -40,6 +41,7 @@ export default {
     },
   },
   data() {
+    return {}
   },
   methods: {
   },

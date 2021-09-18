@@ -17,7 +17,7 @@ export default class TreeStore {
 
     // 实例化 Node 对象
     this.root = new Node({
-      data: this.data,
+      data: this.data, // data => 总数据
       store: this
     })
 

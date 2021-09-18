@@ -16,7 +16,19 @@
     </template>
   </div> -->
   <div class="rm-tree-node">
-
+    <h1 class="title">
+      <span
+        class="arrow"
+        v-if="node.childNodes && node.childNodes.length > 0"
+      ></span>
+      <span class="text"> {{ node.data.label }} </span>
+    </h1>
+    <div class="children" v-for="child in node.childNodes" :key="child.id">
+      <rm-tree-node
+        v-if="node.childNodes && node.childNodes.length > 0"
+        :data="child"
+      />
+    </div>
   </div>
 </template>
 
@@ -90,11 +102,9 @@ export default {
 
 <style lang="scss" scoped>
 .rm-tree-node {
-    white-space: nowrap;
-    outline: 0;
+  white-space: nowrap;
+  outline: 0;
 }
-
-
 
 .el-tree__empty-block {
   position: relative;

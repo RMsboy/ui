@@ -21,10 +21,12 @@ export default {
     RmTreeNode
   },
   props: {
+    // 树结构总数据
     data: {
       type: Array,
       default: () => []
     },
+    // 空数据提示
     emptyText: {
       type: String,
       default: '暂无数据'
@@ -46,6 +48,7 @@ export default {
   methods: {
   },
   created() {
+    // 初始化 stgore 实例对象
     this.store = new TreeStore({
       data: this.data,
       props: this.props,

@@ -27,8 +27,7 @@ export default class Node {
         this.expanded = false;
         this.parent = null;
         this.visible = true;
-debugger
-        // 获取所有选项 赋值同样属性给当前 Node 实例: data、store
+        // 获取所有选项 赋值同样属性给当前 Node 实例: data、store等（in + hasOwnProperty 实现筛选可枚举 + 自身属性不包括原型属性）
         for (let item in options) {
             if (Object.prototype.hasOwnProperty.call(options, item)) {
                 this[item] = options[item]
@@ -58,7 +57,7 @@ debugger
         if (!this.data) return;
         this.updateLeafState();
     }
-
+    
     setData(data) {
         if (!Array.isArray(data)) {
             // node 加上 $treeNodeId 属性, $treeNodeId: data.id

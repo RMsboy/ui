@@ -25,7 +25,7 @@
     </h1>
     <div class="children" v-for="child in node.childNodes" :key="child.id">
       <rm-tree-node
-        v-if="node.childNodes && node.childNodes.length > 0"
+        v-if="child.childNodes && child.childNodes.length > 0"
         :data="child"
       />
     </div>

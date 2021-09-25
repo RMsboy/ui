@@ -57,7 +57,7 @@ export default class Node {
         if (!this.data) return;
         this.updateLeafState();
     }
-    
+    // 设置节点的子node节点 childNodes
     setData(data) {
         if (!Array.isArray(data)) {
             // node 加上 $treeNodeId 属性, $treeNodeId: data.id
@@ -74,7 +74,7 @@ export default class Node {
         } else {
             children = getPropertyFromData(this, 'children') || [];
         }
-
+        
         for (let i = 0, j = children.length; i < j; i++) {
             this.insertChild({ data: children[i] });
         }
@@ -95,7 +95,7 @@ export default class Node {
 
     insertChild(child, index) {
         if (!child) throw new Error('insertChild error: child is required.');
-
+        console.log(child)
         if (!(child instanceof Node)) {
             objectAssign(child, {
                 parent: this,

@@ -23,12 +23,12 @@
       ></span>
       <span class="text"> {{ node.data.label }} </span>
     </h1>
-    <div class="children" v-for="child in node.childNodes" :key="child.id">
+    <!-- <div class="children" v-for="child in node.childNodes" :key="child.id">
       <rm-tree-node
         v-if="child.childNodes && child.childNodes.length > 0"
         :data="child"
       />
-    </div>
+    </div> -->
   </div>
 </template>
 

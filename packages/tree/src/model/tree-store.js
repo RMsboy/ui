@@ -4,7 +4,7 @@ export default class TreeStore {
     this.currentNode = null
     this.currentNodeKey = null
     // 子节点列表
-    // this.childNodes = []
+    this.childNodes = []
 
     // 获取所有选项 赋值同样属性给当前 TreeStore 实例: data
     for (let item in options) {

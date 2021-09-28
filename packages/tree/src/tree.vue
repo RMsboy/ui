@@ -43,7 +43,10 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      store: null, // 相关内容
+      root: null, // node节点
+    }
   },
   methods: {
   },
@@ -53,7 +56,6 @@ export default {
       data: this.data,
       props: this.props,
     })
-
     // root => node 实例对象
     this.root = this.store.root
   }

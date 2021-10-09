@@ -1,74 +1,27 @@
 <template>
-  <!-- <div>
-    <template v-for="(item, index) in list">
-      <div :key="index">
-        <h1 class="title" @click="showAction(index)">
-          <span
-            class="arrow"
-            v-if="item.children && item.children.length > 0"
-          ></span>
-          <span class="text"> {{ item.label }} </span>
-        </h1>
-        <div class="children">
-          <rm-tree-node v-if="item.isShow && item.children" :data="item.children" />
-        </div>
-      </div>
-    </template>
-  </div> -->
   <div class="rm-tree-node">
-    <h1 class="title">
-      <span
-        class="arrow"
-        v-if="node.childNodes && node.childNodes.length > 0"
-      ></span>
-      <span class="text"> {{ node.data.label }} </span>
-    </h1>
-    <div class="children" v-for="child in node.childNodes" :key="child.id">
-      <rm-tree-node
-        v-if="child.childNodes && child.childNodes.length > 0"
-        :data="child"
-      />
+    
+    <div class="rm-tree-node__content">
+      <span class="arrow"
+            v-if="node.childNodes && node.childNodes.length > 0"></span>
+      <span class="rm-tree-node__label"> {{ node.data.label }} </span>
+    </div>
+    <!-- 子级div -->
+    <div class="rm-tree-node__children"
+         v-for="child in node.childNodes"
+         :key="child.id">
+      <h1 class="title" v-if="!child.childNodes.length">
+        <span class="rm-tree-node__label"> {{ child.data.label }} </span>
+      </h1>
+      <rm-tree-node v-if="child.childNodes && child.childNodes.length > 0"
+                    :node="child"
+                    :key="child.id" />
     </div>
   </div>
 </template>
 
 <script>
 // 展示的数据
-const treeArr = [
-  {
-    label: "一级1",
-    children: [
-      {
-        label: "二级1-2",
-        children: [
-          {
-            label: "三级1-3",
-            children: [
-              {
-                label: '四级1-4',
-                children: []
-              }
-            ],
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "一级2",
-    children: [
-      {
-        label: "二级2-2",
-        children: [
-          {
-            label: "三级2-3",
-            children: [],
-          },
-        ],
-      },
-    ],
-  }
-]
 
 export default {
   name: 'RmTreeNode',
@@ -80,22 +33,15 @@ export default {
     }
   },
   data() {
-    const newData = JSON.parse(JSON.stringify(treeArr));
-    newData.forEach((item) => {
-      item.isShow = false;
-    })
     return {
       root: null,
       store: null,
-      list: newData,
+      expanded: false, // 是否展开
+
     }
   },
   methods: {
-    showAction(index) {
-      if (this.list[index].children && this.list[index].children.length > 0) {
-        this.list[index].isShow = !this.list[index].isShow;
-      }
-    }
+
   }
 }
 </script>
@@ -104,6 +50,15 @@ export default {
 .rm-tree-node {
   white-space: nowrap;
   outline: 0;
+  .rm-tree-node__content{
+    line-height: 36px;
+    height: 36px;
+    cursor: pointer;
+  }
+  .rm-tree-node__children {
+    overflow: hidden;
+    background-color: transparent;
+  }
 }
 
 .el-tree__empty-block {

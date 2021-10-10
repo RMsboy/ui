@@ -1,14 +1,14 @@
 <template>
   <div class="rm-tree-node">
-    
+    <!-- 此级div -->
     <div class="rm-tree-node__content">
-      <span class="arrow"
-            v-if="node.childNodes && node.childNodes.length > 0"></span>
-      <span class="rm-tree-node__label"> {{ node.data.label }} </span>
+      <span class="arrow" v-if="node.childNodes && node.childNodes.length > 0"></span>
+      <span class="rm-tree-node__label title"> {{ node.data.label }} </span>
     </div>
     <!-- 子级div -->
     <div class="rm-tree-node__children"
          v-for="child in node.childNodes"
+         :style="{'padding-left': 10 * node.level + 'px'}"
          :key="child.id">
       <h1 class="title" v-if="!child.childNodes.length">
         <span class="rm-tree-node__label"> {{ child.data.label }} </span>
@@ -54,6 +54,9 @@ export default {
     line-height: 36px;
     height: 36px;
     cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
   .rm-tree-node__children {
     overflow: hidden;

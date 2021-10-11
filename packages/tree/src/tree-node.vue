@@ -2,20 +2,16 @@
   <div class="rm-tree-node">
     <!-- 此级div -->
     <div class="rm-tree-node__content">
-      <span class="arrow" v-if="node.childNodes && node.childNodes.length > 0"></span>
+      <span class="arrow" v-if="node.childNodes && node.childNodes.length > 0" @click="handleExpandIconClick"></span>
       <span class="rm-tree-node__label title"> {{ node.data.label }} </span>
     </div>
     <!-- 子级div -->
     <div class="rm-tree-node__children"
+        v-show="expanded"
          v-for="child in node.childNodes"
          :style="{'padding-left': 10 * node.level + 'px'}"
          :key="child.id">
-      <h1 class="title" v-if="!child.childNodes.length">
-        <span class="rm-tree-node__label"> {{ child.data.label }} </span>
-      </h1>
-      <rm-tree-node v-if="child.childNodes && child.childNodes.length > 0"
-                    :node="child"
-                    :key="child.id" />
+      <rm-tree-node :node="child" :key="child.id" />
     </div>
   </div>
 </template>
@@ -36,12 +32,19 @@ export default {
     return {
       root: null,
       store: null,
-      expanded: false, // 是否展开
+      expanded: false, // 是否展开当前节点
 
     }
   },
   methods: {
-
+    handleExpandIconClick() {
+      this.expanded = !this.expanded
+    }
+  },
+  created() {
+    if(this.node.expanded){
+      this.expanded = true
+    }
   }
 }
 </script>

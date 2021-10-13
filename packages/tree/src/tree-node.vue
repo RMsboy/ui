@@ -2,6 +2,7 @@
   <div class="rm-tree-node">
     <!-- 此级div -->
     <div class="rm-tree-node__content">
+      <input type="checkbox" v-if="showCheckbox">
       <span class="arrow" v-if="node.childNodes && node.childNodes.length > 0" @click="handleExpandIconClick"></span>
       <span class="rm-tree-node__label title"> {{ node.data.label }} </span>
     </div>
@@ -26,6 +27,12 @@ export default {
     node: {
       type: Object,
       default: () => { }
+    },
+    props: {}, // 选项
+    // 是否显示勾选框
+    showCheckbox: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

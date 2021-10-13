@@ -1,6 +1,8 @@
 <template>
   <div class="rm-tree">
     <rm-tree-node v-for="child in root.childNodes"
+                  :props="props"
+                  :showCheckbox="showCheckbox"
                   :key="child.id"
                   :node="child"></rm-tree-node>
     <div class="el-tree__empty-block"
@@ -40,6 +42,11 @@ export default {
         };
       }
     },
+    // 是否显示勾选框
+    showCheckbox: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

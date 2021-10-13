@@ -1,24 +1,24 @@
 <template>
   <div>
-    <rm-button type="primary" size="medium" @click.native="openNotification"
-      >通知</rm-button
-    >
-    <rm-button type="warning" @click.native="cloesNotif" icon="info"
-      >关掉</rm-button
-    >
+    <rm-button type="primary"
+               size="medium"
+               @click.native="openNotification">通知</rm-button>
+    <rm-button type="warning"
+               @click.native="cloesNotif"
+               icon="info">关掉</rm-button>
     <rm-icon class="rm-icon-share share"></rm-icon>
-    <rm-input
-      v-model="val"
-      clearable
-      type="input"
-      maxlength="30"
-      show-word-limit
-      :autosize="{ minRows: 2, maxRows: 4 }"
-      suffixIcon="rm-icon-goods"
-    >
+    <rm-input v-model="val"
+              clearable
+              type="input"
+              maxlength="30"
+              show-word-limit
+              :autosize="{ minRows: 2, maxRows: 4 }"
+              suffixIcon="rm-icon-goods">
       <template slot="prepend">Http://</template>
     </rm-input>
-    <rm-tree :data="treeArr"></rm-tree>
+
+    <rm-tree :data="treeArr"
+             :showCheckbox='true'></rm-tree>
   </div>
 </template>
 

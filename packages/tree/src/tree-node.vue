@@ -2,17 +2,22 @@
   <div class="rm-tree-node">
     <!-- 此级div -->
     <div class="rm-tree-node__content">
-      <input type="checkbox" v-if="showCheckbox">
-      <span class="arrow" v-if="node.childNodes && node.childNodes.length > 0" @click="handleExpandIconClick"></span>
+      <input type="checkbox"
+             v-if="showCheckbox">
+      <span class="arrow"
+            v-if="node.childNodes && node.childNodes.length > 0"
+            @click="handleExpandIconClick"></span>
       <span class="rm-tree-node__label title"> {{ node.data.label }} </span>
     </div>
     <!-- 子级div -->
     <div class="rm-tree-node__children"
-        v-show="expanded"
+         v-show="expanded"
          v-for="child in node.childNodes"
          :style="{'padding-left': 10 * node.level + 'px'}"
          :key="child.id">
-      <rm-tree-node :node="child" :key="child.id" />
+      <rm-tree-node :node="child"
+                    :key="child.id"
+                    :showCheckbox="showCheckbox" />
     </div>
   </div>
 </template>
@@ -49,7 +54,7 @@ export default {
     }
   },
   created() {
-    if(this.node.expanded){
+    if (this.node.expanded) {
       this.expanded = true
     }
   }
@@ -60,7 +65,7 @@ export default {
 .rm-tree-node {
   white-space: nowrap;
   outline: 0;
-  .rm-tree-node__content{
+  .rm-tree-node__content {
     line-height: 36px;
     height: 36px;
     cursor: pointer;
